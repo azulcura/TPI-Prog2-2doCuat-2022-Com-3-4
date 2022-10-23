@@ -1,28 +1,106 @@
+from datetime import date
 import sqlite3
 
 class ProgramaPrincipal:
 
     def menu(self):
         while True:
+            print(" ")
             print("Menu de opciones Concesionaria")
-            print("2- Modificar Automovil")
-            print("1- Cargar Automovil")
-            print("0- Salir de menu")
-            nro = int(input("Por favor ingrese un número"))
+            print(" ")
+            print("1- MENU AUTOMOVILES")
+            print("2- MENU MOTOCICLETAS")
+            print("3- OTRO MENU")
+            print("0- Salir")
+            nro = int(input("Por favor ingrese un número: "))
             if nro == 1:
-                marca = input("Por favor ingrese la marca del automovil: ")
-                modelo = input("Por favor ingrese el modelo del automovil: ")
-                precio = input("Por favor ingrese el precio del automovil: ")
-                cantidadDisponibles = input("Por favor ingrese la cantidad de unidades disponibles: ")
-                nuevo_automovil = Automovil(marca,modelo,precio,cantidadDisponibles)
-                nuevo_automovil.cargar_automovil()
+                print("Has Ingresado al MENU AUTOMOVILES")
+                print("1-Cargar automovil")
+                print("2-Modificar automovil")
+                print("3-Borrar automovil")
+                print("4-Cargar disponibilidad del automovil")
+                print("5-Listar automoviles")
+                print("0-Volver al menu")
+                opcionAutomovil= int(input("Por favor ingrese una opción: "))
+
+                if opcionAutomovil ==1:
+                    marca = input("Por favor ingrese la marca del automovil: ")
+                    modelo = input("Por favor ingrese el modelo del automovil: ")
+                    precio = input("Por favor ingrese el precio del automovil: ")
+                    cantidadDisponibles = input("Por favor ingrese la cantidad de unidades disponibles: ")
+                    nuevo_automovil = Automovil(marca,modelo,precio,cantidadDisponibles)
+                    nuevo_automovil.cargar_automovil()
+                if opcionAutomovil ==2:
+                    marca = input("Por favor ingrese el nombre de la marca: ")
+                    modelo = input("Por favor ingrese el nombre del modelo: ")
+                    precio = input("Por favor ingrese el nuevo precio: ")
+                    automovil_a_modificar=Automovil(marca,modelo,precio)
+                    automovil_a_modificar.modificar_automoviles()
+                if opcionAutomovil==3:
+                    marca=input("Ingrese marca del automovil a eliminar: ")
+                    modelo=input("Ingrese el modelo del automovil a eliminar: ")
+                    automovil_a_eliminar=Automovil(marca,modelo)
+                    automovil_a_eliminar.eliminar_automovil()
+                if opcionAutomovil==4:
+                    marca=input("Ingrese marca del automovil que desea cargar disponibilidad: ")
+                    modelo=input("Ingrese modelo del automovil que desea cargar disponibilidad: ")
+                    cargar_disponibilidad_auto= Automovil(marca,modelo)
+                    cargar_disponibilidad_auto.cargar_disponibilidad()
+                if opcionAutomovil==5:
+                    Automovil.listar_automoviles(Automovil)
+                if opcionAutomovil==0:
+                    break
+                if opcionAutomovil<0 or opcionAutomovil>5:
+                    print("ERROR. OPCION FUERA DE RANGO.")
+                    break
+                
+               # --------------------listo menu automovil-----------------------------------------#
+
             if nro ==2:
-                marca = input("Por favor ingrese el nombre de la marca: ")
-                modelo = input("Por favor ingrese el nombre del modelo: ")
-                precio = input("Por favor ingrese el nuevo precio: ")
-                automovil_a_modificar=Automovil(marca,modelo,precio)
-                automovil_a_modificar.modificar_automoviles()
+                print("cls")
+                print("Has Ingresado al MENU MOTOCICLETAS")
+                print("1-Cargar motocicletas")
+                print("2-Cargar disponibilidad motocicleta")
+                print("3-Actualizar precio motocicletas")
+                print("3-Borrar motocicletas")
+                print("5-Listado de motocicletas por fecha")
+                print("6-Listado historico de motocicletas")
+                print("0-Volver al menu")
+                opcionMotocicletas= int(input("Por favor ingrese una opción: "))
+                if opcionMotocicletas ==1:
+                    marca = input("Ingrese la marca de la motocicleta: ")
+                    modelo = input("Ingrese el modelo de la motocicleta: ")
+                    cilindrada = input("Ingrese la cilindrada: ")
+                    color = input("Ingrese color de la motocicleta: ")
+                    precio = input("Ingrese el precio: ")
+                    cantidadDisponibles=input("Ingrese cantidad disponible: ")
+                    nueva_motocicleta = Motocicleta(marca,modelo,cilindrada,precio,color, cantidadDisponibles)
+                    nueva_motocicleta.cargar_motocicleta()
+                if opcionMotocicletas==2:
+                    marca = input("Por favor ingrese el nombre de la marca: ")
+                    modelo = input("Por favor ingrese el nombre del modelo: ")
+                    cargar_disponibilidad_moto=Motocicleta(marca,modelo,cantidadDisponibles)
+                    cargar_disponibilidad_moto.incrementar_disponibilidad()
+                if opcionMotocicletas ==3:
+                    Motocicleta.actualizar_motocicleta(Motocicleta)
+                if opcionMotocicletas==4:
+                    marca = input("Por favor ingrese la marca de la motocicleta: ")
+                    modelo = input("Por favor ingrese el modelo de la motocicleta: ")
+                    Motocicleta_a_eliminar=Motocicleta(marca, modelo)
+                    Motocicleta_a_eliminar.eliminar_motocicleta()
+                if opcionMotocicletas==5:
+                    Motocicleta.listar_motocicletas_fecha(Motocicleta)
+                if opcionMotocicletas==6:
+                    Motocicleta.listar_motocicletas_historico(Motocicleta)
+                if opcionMotocicletas==0:
+                    break
+                if opcionMotocicletas<0 or opcionMotocicletas>6:
+                    print("ERROR. OPCION FUERA DE RANGO.")
+                    break
             if nro==0:
+                break
+            if nro <0 or nro >3:
+                print("ERROR. OPCION FUERA DE RANGO")
                 break
     
     def crearTablas(self):
@@ -32,6 +110,23 @@ class ProgramaPrincipal:
         conexion.miCursor.execute("CREATE TABLE AUTOMOVILES (id_automovil INTEGER PRIMARY KEY , marca  VARCHAR(30) ,modelo  VARCHAR(30),precio FLOAT NOT NULL, cantidadDisponibles INTEGER NOT NULL,UNIQUE(marca,modelo))")    
         conexion.miConexion.commit()       
         conexion.cerrarConexion()
+
+        conexion = Conexiones()
+        conexion.abrirConexion()
+        conexion.miCursor.execute("DROP TABLE IF EXISTS MOTOCICLETAS")
+        conexion.miCursor.execute("CREATE TABLE MOTOCICLETAS (id_moto INTEGER PRIMARY KEY , modelo  VARCHAR(30), marca  VARCHAR(30), cilindrada  VARCHAR(30), precio INTEGER NOT NULL, color  VARCHAR(30), cantidadDisponibles INTEGER NOT NULL, fechaUltimoPrecio DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP)")   
+        conexion.miConexion.commit()       
+        conexion.cerrarConexion()
+
+    def motocicletas_historico(self):
+        conexion = Conexiones()
+        conexion.abrirConexion()
+        conexion.miCursor.execute("DROP TABLE IF EXISTS MOTOCICLETAS_HISTORICO")
+        conexion.miCursor.execute("CREATE TABLE MOTOCICLETAS_HISTORICO (id_moto INTEGER , modelo  VARCHAR(30), marca  VARCHAR(30), cilindrada  VARCHAR(30), precio INTEGER, color  VARCHAR(30), cantidadDisponibles INTEGER, fechaUltimoPrecio DATETIME)")
+        conexion.miConexion.commit()     
+        conexion.cerrarConexion()
+
+   
 
 class Automovil:
     def __init__(self, marca, modelo,precio=None,cantidadDisponibles=None):
@@ -64,6 +159,148 @@ class Automovil:
             print('Error al actualizar un automovil')
         finally:
             conexion.cerrarConexion()  
+    def eliminar_automovil(self):
+        conexion=Conexiones()
+        conexion.abrirConexion()
+        try:
+            conexion.miCursor.execute("SELECT marca, modelo FROM AUTOMOVILES")
+            marca_modelo= conexion.miCursor.fetchall()
+            for marca_modelo in marca_modelo:
+                if marca_modelo[0] ==self.marca and marca_modelo[1]==self.modelo:
+                    conexion.miCursor.execute("DELETE FROM AUTOMOVILES where marca='{}'and modelo='{}'" .format(self.marca,self.modelo))
+                    conexion.miConexion.commit()
+                    print("Automovil eliminado correctamente")
+                else:
+                    print("El automovil ingresado no existe")
+        except:
+            print("ERROR. No se ha podido eliminar el automovil")
+        finally:
+            conexion.cerrarConexion()
+
+    def cargar_disponibilidad(self):
+        conexion = Conexiones()
+        conexion.abrirConexion()
+        try:
+            conexion.miCursor.execute("UPDATE AUTOMOVILES SET cantidadDisponibles=cantidadDisponibles + 1 where marca='{}' and modelo='{}'".format(self.marca, self.modelo))
+            conexion.miConexion.commit()
+            print("Cantidad disponible modificada correctamente")
+        except:
+            print("ERROR. No se ha podido actualizar la cantidad disponible")
+        finally:
+            conexion.cerrarConexion()
+    def listar_automoviles(self):
+        conexion=Conexiones()
+        conexion.abrirConexion()
+        try:
+            conexion.miCursor.execute("SELECT * FROM AUTOMOVILES")
+            autos = conexion.miCursor.fetchall()
+            print(autos)
+        except:
+            print("ERROR. No se han podido listar los automoviles")
+        finally:
+            conexion.cerrarConexion()
+
+
+class Motocicleta:
+    def __init__(self,modelo,marca,cilindrada=None,precio=None,color=None,cantidadDisponibles=None):
+        self.modelo = modelo
+        self.marca = marca
+        self.cilindrada = cilindrada
+        self.precio=precio
+        self.color = color
+        self.cantidadDisponibles=cantidadDisponibles
+        
+
+    def cargar_motocicleta(self):
+        conexion = Conexiones()
+        conexion.abrirConexion()
+        try:
+            conexion.miCursor.execute("INSERT INTO MOTOCICLETAS(modelo,marca,cilindrada,precio,color,cantidadDisponibles) VALUES('{}', '{}', '{}', '{}', '{}', '{}')".format(self.modelo,self.marca,self.cilindrada,self.precio,self.color,self.cantidadDisponibles))
+            conexion.miConexion.commit()
+            print("Motocicleta cargada exitosamente")
+        except:
+            print("Error al agregar una motocicleta")
+        finally:
+            conexion.cerrarConexion()
+
+    def actualizar_motocicleta(self):
+        programa.motocicletas_historico() 
+        conexion = Conexiones()
+        conexion.abrirConexion()
+        try:
+            conexion.miCursor.execute("SELECT * FROM MOTOCICLETAS") 
+            motocicletas = conexion.miCursor.fetchall() 
+            for moto in motocicletas:   
+                id, modelo, marca, cilindrada, precio, color, cantidadDisponibles, fecha = moto 
+                conexion.miCursor.execute("INSERT INTO MOTOCICLETAS_HISTORICO(id_moto,modelo,marca,cilindrada,precio,color,cantidadDisponibles,fechaUltimoPrecio) VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(id,modelo,marca,cilindrada,precio,color,cantidadDisponibles,fecha))
+            conexion.miConexion.commit()
+            conexion.miCursor.execute("UPDATE MOTOCICLETAS SET precio= precio*1.1, fechaUltimoPrecio=CURRENT_TIMESTAMP")
+            conexion.miConexion.commit()
+            print("Motocicletas actualizadas correctamente")
+        except:
+            print("Error al actualizar precios")
+        finally:
+            conexion.cerrarConexion()
+    def eliminar_motocicleta(self):
+        conexion = Conexiones()
+        conexion.abrirConexion()
+        try:
+            conexion.miCursor.execute("DELETE FROM MOTOCICLETAS where marca='{}' and modelo='{}'".format(self.marca,self.modelo))
+            conexion.miConexion.commit()
+            print("Motocicleta eliminada exitosamente")
+        except:
+            print("ERROR. No se ha podido eliminar la motocicleta")
+        finally:
+            conexion.cerrarConexion()
+
+    def incrementar_disponibilidad(self):
+        conexion = Conexiones()
+        conexion.abrirConexion()
+        try:
+            conexion.miCursor.execute("UPDATE MOTOCICLETAS SET cantidadDisponibles= cantidadDisponibles+1 where marca= '{}' and modelo= '{}' ".format(self.marca, self.modelo))
+            conexion.miConexion.commit()
+            print("Motocicleta incrementada exitosamente")
+        except:
+            print("ERROR. No se ha podido incrementar la Motocicleta")
+        finally:
+            conexion.cerrarConexion() 
+
+    def listar_motocicletas_fecha(self):
+        conexion = Conexiones()
+        conexion.abrirConexion()
+        try:
+            conexion.miCursor.execute("SELECT * FROM MOTOCICLETAS")
+            motocicletas = conexion.miCursor.fetchall()
+            fecha = input("ingrese una fecha formato AAAA/MM/DD: ")
+            print("-------------LISTADO POR FECHA------------------")     
+            for moto in motocicletas:
+                print(f'ID: {moto[0]}\nModelo: {moto[1]}\nMarca: {moto[2]}\nCilindrada: {moto[3]}\nPrecio: {moto[4]}\nColor: {moto[5]}\nCantidad Disponible: {moto[6]}\nFecha Ultimo Precio: {moto[7]}')
+                if moto[7] == fecha:
+                    break     
+        except:
+            print("ERROR. No se ha podido mostrar el listado")
+        finally:
+            conexion.cerrarConexion() 
+
+    def listar_motocicletas_historico(self):
+        conexion = Conexiones()
+        conexion.abrirConexion()
+        try:
+            conexion.miCursor.execute("SELECT * FROM MOTOCICLETAS_HISTORICO")
+            motocicletas_historico = conexion.miCursor.fetchall()
+            for moto in motocicletas_historico:
+                print(f'ID: {moto[0]}\nModelo: {moto[1]}\nMarca: {moto[2]}\nCilindrada: {moto[3]}\nPrecio: {moto[4]}\nColor: {moto[5]}\nCantidad Disponible: {moto[6]}\nFecha Ultimo Precio: {moto[7]}')
+                print("----------------------------------")
+        except:
+            print("Error al mostrar motocicletas")
+        finally:
+            conexion.cerrarConexion()
+
+
+
+    
+           
+            
         
     
 class Conexiones:
