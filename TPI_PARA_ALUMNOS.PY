@@ -63,8 +63,7 @@ class ProgramaPrincipal:
                 print("2-Cargar disponibilidad motocicleta")
                 print("3-Actualizar precio motocicletas")
                 print("3-Borrar motocicletas")
-                print("5-Listado de motocicletas por fecha")
-                print("6-Listado historico de motocicletas")
+                print("5-LISTADOS")
                 print("0-Volver al menu")
                 opcionMotocicletas= int(input("Por favor ingrese una opción: "))
                 if opcionMotocicletas ==1:
@@ -89,12 +88,20 @@ class ProgramaPrincipal:
                     Motocicleta_a_eliminar=Motocicleta(marca, modelo)
                     Motocicleta_a_eliminar.eliminar_motocicleta()
                 if opcionMotocicletas==5:
-                    Motocicleta.listar_motocicletas_fecha(Motocicleta)
-                if opcionMotocicletas==6:
-                    Motocicleta.listar_motocicletas_historico(Motocicleta)
+                    print("1-Listado por fecha \n 2-Listado historico \n 3- Listado por Marca y Modelo \n 4-Listado por color")
+                    opcionlistado=int(input("Selecciona una opcion: "))
+                    if opcionlistado==1:
+                        Motocicleta.listar_motocicletas_fecha(Motocicleta)
+                    if opcionlistado==2:
+                        Motocicleta.listar_motocicletas_historico(Motocicleta)
+                    if opcionlistado==3:
+                        Motocicleta.listar_motocicleta_marca_modelo(Motocicleta)
+                    if opcionlistado==4:
+                        Motocicleta.listar_motocicleta_color(Motocicleta)
+
                 if opcionMotocicletas==0:
                     break
-                if opcionMotocicletas<0 or opcionMotocicletas>6:
+                if opcionMotocicletas<0 or opcionMotocicletas>5:
                     print("ERROR. OPCION FUERA DE RANGO.")
                     break
             if nro==0:
@@ -202,9 +209,9 @@ class Automovil:
 
 
 class Motocicleta:
-    def __init__(self,modelo,marca,cilindrada=None,precio=None,color=None,cantidadDisponibles=None):
-        self.modelo = modelo
+    def __init__(self,marca,modelo,cilindrada=None,precio=None,color=None,cantidadDisponibles=None):
         self.marca = marca
+        self.modelo = modelo
         self.cilindrada = cilindrada
         self.precio=precio
         self.color = color
@@ -274,7 +281,7 @@ class Motocicleta:
             fecha = input("ingrese una fecha formato AAAA/MM/DD: ")
             print("-------------LISTADO POR FECHA------------------")     
             for moto in motocicletas:
-                print(f'ID: {moto[0]}\nModelo: {moto[1]}\nMarca: {moto[2]}\nCilindrada: {moto[3]}\nPrecio: {moto[4]}\nColor: {moto[5]}\nCantidad Disponible: {moto[6]}\nFecha Ultimo Precio: {moto[7]}')
+                print(f'ID: {moto[0]}\nMarca: {moto[1]}\nModelo: {moto[2]}\nCilindrada: {moto[3]}\nPrecio: {moto[4]}\nColor: {moto[5]}\nCantidad Disponible: {moto[6]}\nFecha Ultimo Precio: {moto[7]}')
                 if moto[7] == fecha:
                     break     
         except:
@@ -289,20 +296,53 @@ class Motocicleta:
             conexion.miCursor.execute("SELECT * FROM MOTOCICLETAS_HISTORICO")
             motocicletas_historico = conexion.miCursor.fetchall()
             for moto in motocicletas_historico:
-                print(f'ID: {moto[0]}\nModelo: {moto[1]}\nMarca: {moto[2]}\nCilindrada: {moto[3]}\nPrecio: {moto[4]}\nColor: {moto[5]}\nCantidad Disponible: {moto[6]}\nFecha Ultimo Precio: {moto[7]}')
+                print("-----------LISTADO HISTORICO---------------")
+                print(f'ID: {moto[0]}\nMarca: {moto[1]}\nModelo: {moto[2]}\nCilindrada: {moto[3]}\nPrecio: {moto[4]}\nColor: {moto[5]}\nCantidad Disponible: {moto[6]}\nFecha Ultimo Precio: {moto[7]}')
                 print("----------------------------------")
         except:
             print("Error al mostrar motocicletas")
         finally:
             conexion.cerrarConexion()
+    def listar_motocicleta_marca_modelo(self):
+        conexion=Conexiones()
+        conexion.abrirConexion()
+        try:
+            conexion.miCursor.execute("SELECT * FROM MOTOCICLETAS")
+            motocicletas = conexion.miCursor.fetchall()
+            marca = input("ingrese marca a buscar: ")
+            modelo=input("ingrese modelo a buscar: ")
+            print("-------------LISTADO POR MARCA Y MODELO------------------")     
+            for moto in motocicletas:
+                if moto[1] == marca:
+                    if moto[2]==modelo:
+                        print(f'ID: {moto[0]}\nMarca: {moto[1]}\nModelo: {moto[2]}\nCilindrada: {moto[3]}\nPrecio: {moto[4]}\nColor: {moto[5]}\nCantidad Disponible: {moto[6]}\nFecha Ultimo Precio: {moto[7]}')
+                        break  
+                else:
+                    "Listado inexistente."   
+        except:
+            print("ERROR. No se ha podido mostrar el listado")
+        finally:
+            conexion.cerrarConexion() 
+    def listar_motocicleta_color(self):
+        conexion=Conexiones()
+        conexion.abrirConexion()
+        try:
+            conexion.miCursor.execute("SELECT * FROM MOTOCICLETAS")
+            motocicletas = conexion.miCursor.fetchall()
+            color = input("ingrese color a buscar: ")
+            print("-------------LISTADO COLOR------------------")     
+            for moto in motocicletas:
+                if moto[5] == color:
+                        print(f'ID: {moto[0]}\nMarca: {moto[1]}\nModelo: {moto[2]}\nCilindrada: {moto[3]}\nPrecio: {moto[4]}\nColor: {moto[5]}\nCantidad Disponible: {moto[6]}\nFecha Ultimo Precio: {moto[7]}')
+                        break  
+                else:
+                    "Listado inexistente."   
+        except:
+            print("ERROR. No se ha podido mostrar el listado")
+        finally:
+            conexion.cerrarConexion()
 
 
-
-    
-           
-            
-        
-    
 class Conexiones:
     
     def abrirConexion(self):
