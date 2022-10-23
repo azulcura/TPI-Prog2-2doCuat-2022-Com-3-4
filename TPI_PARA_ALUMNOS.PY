@@ -1,5 +1,7 @@
+
 from datetime import date
 import sqlite3
+from wsgiref.validate import validator
 
 class ProgramaPrincipal:
 
@@ -21,28 +23,61 @@ class ProgramaPrincipal:
                 print("5-Listar automoviles")
                 print("0-Volver al menu")
                 opcionAutomovil= int(input("Por favor ingrese una opción: "))
-
+                validar=False
                 if opcionAutomovil ==1:
-                    marca = input("Por favor ingrese la marca del automovil: ")
-                    modelo = input("Por favor ingrese el modelo del automovil: ")
+                    while(not validar):
+                     marca = input("Por favor ingrese la marca del automovil: ")
+                     validar=self.validarCaracter(marca)
+                    validar=False
+
+                    while(not validar):
+                        modelo = input("Por favor ingrese el modelo del automovil: ")
+                        validar=self.validarNumero(modelo)
+                    validar=False
+
                     precio = input("Por favor ingrese el precio del automovil: ")
-                    cantidadDisponibles = input("Por favor ingrese la cantidad de unidades disponibles: ")
+                    cantidadDisponibles = int(input("Por favor ingrese la cantidad de unidades disponibles: "))
+                        
+
                     nuevo_automovil = Automovil(marca,modelo,precio,cantidadDisponibles)
                     nuevo_automovil.cargar_automovil()
                 if opcionAutomovil ==2:
-                    marca = input("Por favor ingrese el nombre de la marca: ")
-                    modelo = input("Por favor ingrese el nombre del modelo: ")
+                    while(not validar):
+                        marca = input("Por favor ingrese el nombre de la marca: ")
+                        validar=self.validarCaracter(marca)
+                    validar=False
+
+                    while(not validar):
+                        modelo = input("Por favor ingrese modelo: ")
+                        validar=self.validarNumero(modelo)
+                    validar=False
+
                     precio = input("Por favor ingrese el nuevo precio: ")
                     automovil_a_modificar=Automovil(marca,modelo,precio)
                     automovil_a_modificar.modificar_automoviles()
                 if opcionAutomovil==3:
-                    marca=input("Ingrese marca del automovil a eliminar: ")
-                    modelo=input("Ingrese el modelo del automovil a eliminar: ")
+
+                    while(not validar):
+                        marca=input("Ingrese marca del automovil a eliminar: ")
+                        validar=self.validarCaracter(marca)
+                    validar=False
+                    while(not validar):
+                        modelo=input("Ingrese el modelo del automovil a eliminar: ")
+                        validar=self.validarNumero(modelo)
+                    validar=False
                     automovil_a_eliminar=Automovil(marca,modelo)
                     automovil_a_eliminar.eliminar_automovil()
                 if opcionAutomovil==4:
-                    marca=input("Ingrese marca del automovil que desea cargar disponibilidad: ")
-                    modelo=input("Ingrese modelo del automovil que desea cargar disponibilidad: ")
+
+                    while(not validar):
+                        marca=input("Ingrese marca del automovil que desea cargar disponibilidad: ")
+                        validar=self.validarCaracter(marca)
+                    validar=False
+                    while(not validar):
+                        modelo=input("Ingrese modelo del automovil que desea cargar disponibilidad: ")
+                        validar=self.validarNumero(modelo)
+                    validar=False
+
                     cargar_disponibilidad_auto= Automovil(marca,modelo)
                     cargar_disponibilidad_auto.cargar_disponibilidad()
                 if opcionAutomovil==5:
@@ -65,27 +100,33 @@ class ProgramaPrincipal:
                 print("6-Modificar motocicleta")
                 print("0-Volver al menu")
                 opcionMotocicletas= int(input("Por favor ingrese una opción: "))
+                validar=False
                 if opcionMotocicletas ==1:
-                    marca = input("Ingrese la marca de la motocicleta: ")
-                    modelo = input("Ingrese el modelo de la motocicleta: ")
+                    while(not validar):
+                        marca = input("Ingrese la marca de la motocicleta: ")
+                        validar=self.validarCaracter(marca)
+                    validar=False
+                    while(not validar):
+                        modelo = input("Ingrese el modelo de la motocicleta: ")
+                        validar=self.validarNumero(modelo)
+                    validar=False
+
                     cilindrada = input("Ingrese la cilindrada: ")
-                    color = input("Ingrese color de la motocicleta: ")
+
+                    while(not validar):
+                        color = input("Ingrese el color de la motocicleta: ")
+                        validar=self.validarCaracter(color)
+                    validar=False
                     precio = int(input("Ingrese el precio: "))
                     cantidadDisponibles=int(input("Ingrese cantidad disponible: "))
                     nueva_motocicleta = Motocicleta(marca,modelo,cilindrada,precio,color, cantidadDisponibles)
                     nueva_motocicleta.cargar_motocicleta()
                 if opcionMotocicletas==2:
-                    marca = input("Por favor ingrese el nombre de la marca: ")
-                    modelo = input("Por favor ingrese el nombre del modelo: ")
-                    cargar_disponibilidad_moto=Motocicleta(marca,modelo,cantidadDisponibles)
-                    cargar_disponibilidad_moto.incrementar_disponibilidad()
+                    Motocicleta.incrementar_disponibilidad(Motocicleta)
                 if opcionMotocicletas ==3:
                     Motocicleta.actualizar_motocicleta(Motocicleta)
                 if opcionMotocicletas==4:
-                    marca = input("Por favor ingrese la marca de la motocicleta: ")
-                    modelo = input("Por favor ingrese el modelo de la motocicleta: ")
-                    Motocicleta_a_eliminar=Motocicleta(marca, modelo)
-                    Motocicleta_a_eliminar.eliminar_motocicleta()
+                    Motocicleta.eliminar_motocicleta(Motocicleta)
                 if opcionMotocicletas==5:
                     print("1-Listado por fecha \n 2-Listado historico \n 3- Listado por Marca y Modelo \n 4-Listado por color")
                     opcionlistado=int(input("Selecciona una opcion: "))
@@ -98,11 +139,7 @@ class ProgramaPrincipal:
                     if opcionlistado==4:
                         Motocicleta.listar_motocicleta_color(Motocicleta)
                 if opcionMotocicletas ==6:
-                    marca = input("Por favor ingrese el nombre de la marca: ")
-                    modelo = input("Por favor ingrese el nombre del modelo: ")
-                    precio = int(input("Por favor ingrese el nuevo precio: "))
-                    motocicleta_a_modificar=Motocicleta(marca,modelo,precio)
-                    motocicleta_a_modificar.modificar_motocicleta()
+                    Motocicleta.modificar_motocicleta(Motocicleta)
                 if opcionMotocicletas==0:
                     break
                 if opcionMotocicletas<0 or opcionMotocicletas>6:
@@ -137,6 +174,26 @@ class ProgramaPrincipal:
         conexion.miConexion.commit()     
         conexion.cerrarConexion()
 
+    def validarCaracter(self,validar):
+        if(validar.isalpha()!=True or len(validar)>=30):
+            print("Error. Intente nuevamente")
+            return False
+        return True
+    def validarNumero(self,validar):
+        if(validar.isalpha()==True):
+            print("Error. ingrese nuevamente")
+            return False
+        return True
+   ## def validarPrecio(self,precio):
+     #  if(precio <= 0): NO SE COMO AGREGAR QUE EL PRECIO SEA FLOAT ADEMAS DE MAYOR A 0(lo msimo con cantidadidsp)
+       #   return False
+        #return True
+    #def validarCantidad(self,cantidadDisponibles):
+     #   if(cantidadDisponibles <= 0):
+      #      print("CANTIDAD ERRONEA")
+       #     return False
+        #return True
+       
    
 
 class Automovil:
@@ -258,9 +315,10 @@ class Motocicleta:
         conexion = Conexiones()
         conexion.abrirConexion()
         try:
-            conexion.miCursor.execute("DELETE FROM MOTOCICLETAS where marca='{}' and modelo='{}'".format(self.marca,self.modelo))
+            id=input("Ingrese el ID de la motocicleta a eliminar: ")
+            conexion.miCursor.execute("DELETE FROM MOTOCICLETAS where id_moto='{}'".format(id))
             conexion.miConexion.commit()
-            print("Se han eliminado las motocicletas que tengan la misma marca y modelo ingresado")
+            print("Motocicleta eliminada exitosamente")
         except:
             print("ERROR. No se ha podido eliminar la motocicleta")
         finally:
@@ -270,7 +328,8 @@ class Motocicleta:
         conexion = Conexiones()
         conexion.abrirConexion()
         try:
-            conexion.miCursor.execute("UPDATE MOTOCICLETAS SET cantidadDisponibles= cantidadDisponibles+1 where marca= '{}' and modelo= '{}' ".format(self.marca, self.modelo))
+            id = input("Ingrese el ID de la motocicleta a incrementar: ")
+            conexion.miCursor.execute("UPDATE MOTOCICLETAS SET cantidadDisponibles= cantidadDisponibles+1 where id_moto= '{}'".format(id))
             conexion.miConexion.commit()
             print("Motocicleta incrementada exitosamente")
         except:
@@ -351,14 +410,11 @@ class Motocicleta:
         conexion = Conexiones()
         conexion.abrirConexion()
         try:
-            conexion.miCursor.execute("SELECT marca FROM MOTOCICLETAS")
-            marca = str(conexion.miCursor.fetchall())
-            conexion.miCursor.execute("SELECT modelo FROM MOTOCICLETAS")
-            modelo = str(conexion.miCursor.fetchall())
-
-            conexion.miCursor.execute("UPDATE MOTOCICLETAS SET precio='{}', fechaUltimoPrecio = CURRENT_TIMESTAMP where marca='{}' and modelo='{}' ".format(self.precio,self.marca,self.modelo))
+            id=input("Ingresa el ID de la motocicleta a modificar: ")
+            precio=input("Ingresa el nuevo precio: ")
+            conexion.miCursor.execute("UPDATE MOTOCICLETAS SET precio where id_moto= '{}' " .format(self.precio,id))
             conexion.miConexion.commit()
-            print("Motocicleta/s modificada/s correctamente")
+            print("Motocicleta modificada correctamente")
         except:
             print('ERROR AL MODIFICAR')
         finally:
