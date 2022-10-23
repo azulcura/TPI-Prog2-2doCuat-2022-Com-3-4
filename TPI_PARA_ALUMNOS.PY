@@ -10,13 +10,12 @@ class ProgramaPrincipal:
             print(" ")
             print("1- MENU AUTOMOVILES")
             print("2- MENU MOTOCICLETAS")
-            print("3- OTRO MENU")
             print("0- Salir")
             nro = int(input("Por favor ingrese un número: "))
             if nro == 1:
                 print("Has Ingresado al MENU AUTOMOVILES")
                 print("1-Cargar automovil")
-                print("2-Modificar automovil")
+                print("2-Modificar precio automovil")
                 print("3-Borrar automovil")
                 print("4-Cargar disponibilidad del automovil")
                 print("5-Listar automoviles")
@@ -50,7 +49,7 @@ class ProgramaPrincipal:
                     Automovil.listar_automoviles(Automovil)
                 if opcionAutomovil==0:
                     break
-                if opcionAutomovil<0 or opcionAutomovil>5:
+                if opcionAutomovil<0 or opcionAutomovil>6:
                     print("ERROR. OPCION FUERA DE RANGO.")
                     break
                 
@@ -61,8 +60,9 @@ class ProgramaPrincipal:
                 print("1-Cargar motocicletas")
                 print("2-Cargar disponibilidad motocicleta")
                 print("3-Actualizar precio motocicletas")
-                print("3-Borrar motocicletas")
+                print("4-Borrar motocicletas")
                 print("5-LISTADOS")
+                print("6-Modificar motocicleta")
                 print("0-Volver al menu")
                 opcionMotocicletas= int(input("Por favor ingrese una opción: "))
                 if opcionMotocicletas ==1:
@@ -70,8 +70,8 @@ class ProgramaPrincipal:
                     modelo = input("Ingrese el modelo de la motocicleta: ")
                     cilindrada = input("Ingrese la cilindrada: ")
                     color = input("Ingrese color de la motocicleta: ")
-                    precio = input("Ingrese el precio: ")
-                    cantidadDisponibles=input("Ingrese cantidad disponible: ")
+                    precio = int(input("Ingrese el precio: "))
+                    cantidadDisponibles=int(input("Ingrese cantidad disponible: "))
                     nueva_motocicleta = Motocicleta(marca,modelo,cilindrada,precio,color, cantidadDisponibles)
                     nueva_motocicleta.cargar_motocicleta()
                 if opcionMotocicletas==2:
@@ -97,15 +97,20 @@ class ProgramaPrincipal:
                         Motocicleta.listar_motocicleta_marca_modelo(Motocicleta)
                     if opcionlistado==4:
                         Motocicleta.listar_motocicleta_color(Motocicleta)
-
+                if opcionMotocicletas ==6:
+                    marca = input("Por favor ingrese el nombre de la marca: ")
+                    modelo = input("Por favor ingrese el nombre del modelo: ")
+                    precio = int(input("Por favor ingrese el nuevo precio: "))
+                    motocicleta_a_modificar=Motocicleta(marca,modelo,precio)
+                    motocicleta_a_modificar.modificar_motocicleta()
                 if opcionMotocicletas==0:
                     break
-                if opcionMotocicletas<0 or opcionMotocicletas>5:
+                if opcionMotocicletas<0 or opcionMotocicletas>6:
                     print("ERROR. OPCION FUERA DE RANGO.")
                     break
             if nro==0:
                 break
-            if nro <0 or nro >3:
+            if nro <0 or nro >2:
                 print("ERROR. OPCION FUERA DE RANGO")
                 break
     
@@ -207,6 +212,8 @@ class Automovil:
             conexion.cerrarConexion()
 
 
+
+
 class Motocicleta:
     def __init__(self,marca,modelo,cilindrada=None,precio=None,color=None,cantidadDisponibles=None):
         self.marca = marca
@@ -253,7 +260,7 @@ class Motocicleta:
         try:
             conexion.miCursor.execute("DELETE FROM MOTOCICLETAS where marca='{}' and modelo='{}'".format(self.marca,self.modelo))
             conexion.miConexion.commit()
-            print("Motocicleta eliminada exitosamente")
+            print("Se han eliminado las motocicletas que tengan la misma marca y modelo ingresado")
         except:
             print("ERROR. No se ha podido eliminar la motocicleta")
         finally:
@@ -340,6 +347,23 @@ class Motocicleta:
             print("ERROR. No se ha podido mostrar el listado")
         finally:
             conexion.cerrarConexion()
+    def modificar_motocicleta(self):
+        conexion = Conexiones()
+        conexion.abrirConexion()
+        try:
+            conexion.miCursor.execute("SELECT marca FROM MOTOCICLETAS")
+            marca = str(conexion.miCursor.fetchall())
+            conexion.miCursor.execute("SELECT modelo FROM MOTOCICLETAS")
+            modelo = str(conexion.miCursor.fetchall())
+
+            conexion.miCursor.execute("UPDATE MOTOCICLETAS SET precio='{}', fechaUltimoPrecio = CURRENT_TIMESTAMP where marca='{}' and modelo='{}' ".format(self.precio,self.marca,self.modelo))
+            conexion.miConexion.commit()
+            print("Motocicleta/s modificada/s correctamente")
+        except:
+            print('ERROR AL MODIFICAR')
+        finally:
+            conexion.cerrarConexion()
+    
 
 
 class Conexiones:
