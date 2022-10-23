@@ -57,7 +57,6 @@ class ProgramaPrincipal:
                # --------------------listo menu automovil-----------------------------------------#
 
             if nro ==2:
-                print("cls")
                 print("Has Ingresado al MENU MOTOCICLETAS")
                 print("1-Cargar motocicletas")
                 print("2-Cargar disponibilidad motocicleta")
