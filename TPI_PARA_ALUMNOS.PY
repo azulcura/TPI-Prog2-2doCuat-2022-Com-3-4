@@ -112,14 +112,11 @@ class ProgramaPrincipal:
                         validar=self.validarCaracter(marca)
                     validar=False
                    
+                    #A cilindrada y modelo no le pusimos validaciones ya que pueden ser ambos. 
                     
                     modelo = input("Ingrese el modelo de la motocicleta: ")
                         
-                   # Agregue validar cilindrada
-                    while(not validar):
-                        cilindrada = input("Ingrese la cilindrada: ")
-                        validar=self.validarNumero(modelo)
-                    validar=False
+                    cilindrada = input("Ingrese la cilindrada: ")
                    
                     while(not validar):
                         color = input("Ingrese el color de la motocicleta: ")
@@ -203,8 +200,7 @@ class ProgramaPrincipal:
             print("Error. ingrese nuevamente")
             return False
         return True
-        #si se combina letras y numeros no funciona
-   
+
     def validarPrecio(self,precio):
         if  precio.isnumeric()==False or float(precio)<=0 : 
             print("Error. ingrese nuevamente")
@@ -212,11 +208,6 @@ class ProgramaPrincipal:
         return True
     
 
-    #def validarCantidad(self,cantidadDisponibles):
-     #   if(cantidadDisponibles <= 0):
-      #      print("CANTIDAD ERRONEA")
-       #     return False
-        #return True
        
    
 class Automovil:
