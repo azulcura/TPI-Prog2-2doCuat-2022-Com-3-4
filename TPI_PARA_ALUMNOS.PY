@@ -1,4 +1,3 @@
-
 from datetime import date
 import sqlite3
 from wsgiref.validate import validator
@@ -22,22 +21,27 @@ class ProgramaPrincipal:
                 print("4-Cargar disponibilidad del automovil")
                 print("5-Listar automoviles")
                 print("0-Volver al menu")
+                
                 opcionAutomovil= int(input("Por favor ingrese una opción: "))
                 validar=False
+                
                 if opcionAutomovil ==1:
                     while(not validar):
                      marca = input("Por favor ingrese la marca del automovil: ")
                      validar=self.validarCaracter(marca)
                     validar=False
 
+                    modelo = input("Por favor ingrese el modelo del automovil: ")
+
                     while(not validar):
-                        modelo = input("Por favor ingrese el modelo del automovil: ")
-                        validar=self.validarNumero(modelo)
+                        precio = input("Por favor ingrese el precio del automovil: ")
+                        validar=self.validarPrecio(precio)
                     validar=False
 
-                    precio = input("Por favor ingrese el precio del automovil: ")
-                    cantidadDisponibles = int(input("Por favor ingrese la cantidad de unidades disponibles: "))
-                        
+                    while(not validar):
+                        cantidadDisponibles=input("Ingrese cantidad disponible: ")
+                        validar=self.validarNumero(cantidadDisponibles)
+                    validar=False
 
                     nuevo_automovil = Automovil(marca,modelo,precio,cantidadDisponibles)
                     nuevo_automovil.cargar_automovil()
@@ -47,12 +51,16 @@ class ProgramaPrincipal:
                         validar=self.validarCaracter(marca)
                     validar=False
 
+ 
+                    modelo = input("Por favor ingrese modelo: ")
+                        
+
                     while(not validar):
-                        modelo = input("Por favor ingrese modelo: ")
-                        validar=self.validarNumero(modelo)
+                        precio = input("Por favor ingrese el nuevo precio: ")
+                        validar=self.validarPrecio(precio)
                     validar=False
 
-                    precio = input("Por favor ingrese el nuevo precio: ")
+                    
                     automovil_a_modificar=Automovil(marca,modelo,precio)
                     automovil_a_modificar.modificar_automoviles()
                 if opcionAutomovil==3:
@@ -61,10 +69,9 @@ class ProgramaPrincipal:
                         marca=input("Ingrese marca del automovil a eliminar: ")
                         validar=self.validarCaracter(marca)
                     validar=False
-                    while(not validar):
-                        modelo=input("Ingrese el modelo del automovil a eliminar: ")
-                        validar=self.validarNumero(modelo)
-                    validar=False
+
+                    modelo=input("Ingrese el modelo del automovil a eliminar: ")
+                        
                     automovil_a_eliminar=Automovil(marca,modelo)
                     automovil_a_eliminar.eliminar_automovil()
                 if opcionAutomovil==4:
@@ -73,20 +80,18 @@ class ProgramaPrincipal:
                         marca=input("Ingrese marca del automovil que desea cargar disponibilidad: ")
                         validar=self.validarCaracter(marca)
                     validar=False
-                    while(not validar):
-                        modelo=input("Ingrese modelo del automovil que desea cargar disponibilidad: ")
-                        validar=self.validarNumero(modelo)
-                    validar=False
+         
+                    modelo=input("Ingrese modelo del automovil que desea cargar disponibilidad: ")
+                        
 
                     cargar_disponibilidad_auto= Automovil(marca,modelo)
                     cargar_disponibilidad_auto.cargar_disponibilidad()
                 if opcionAutomovil==5:
                     Automovil.listar_automoviles(Automovil)
                 if opcionAutomovil==0:
-                    break
-                if opcionAutomovil<0 or opcionAutomovil>6:
-                    print("ERROR. OPCION FUERA DE RANGO.")
-                    break
+                    print("Volviendo al menu Consesionaria")     
+                elif opcionAutomovil<0 or opcionAutomovil>5:
+                    print("ERROR..Opcion fuera de rango")
                 
                # --------------------listo menu automovil-----------------------------------------#
 
@@ -106,19 +111,32 @@ class ProgramaPrincipal:
                         marca = input("Ingrese la marca de la motocicleta: ")
                         validar=self.validarCaracter(marca)
                     validar=False
+                   
+                    
+                    modelo = input("Ingrese el modelo de la motocicleta: ")
+                        
+                   # Agregue validar cilindrada
                     while(not validar):
-                        modelo = input("Ingrese el modelo de la motocicleta: ")
+                        cilindrada = input("Ingrese la cilindrada: ")
                         validar=self.validarNumero(modelo)
                     validar=False
-
-                    cilindrada = input("Ingrese la cilindrada: ")
-
+                   
                     while(not validar):
                         color = input("Ingrese el color de la motocicleta: ")
                         validar=self.validarCaracter(color)
                     validar=False
-                    precio = int(input("Ingrese el precio: "))
-                    cantidadDisponibles=int(input("Ingrese cantidad disponible: "))
+                    
+                    while(not validar):
+                        precio = input("Ingrese el precio: ")
+                        validar=self.validarPrecio(precio)
+                    validar=False
+                   
+                    while(not validar):
+                        cantidadDisponibles=input("Ingrese cantidad disponible: ")
+                        validar=self.validarNumero(cantidadDisponibles)
+                    validar=False
+
+
                     nueva_motocicleta = Motocicleta(marca,modelo,cilindrada,precio,color, cantidadDisponibles)
                     nueva_motocicleta.cargar_motocicleta()
                 if opcionMotocicletas==2:
@@ -141,14 +159,14 @@ class ProgramaPrincipal:
                 if opcionMotocicletas ==6:
                     Motocicleta.modificar_motocicleta(Motocicleta)
                 if opcionMotocicletas==0:
-                    break
-                if opcionMotocicletas<0 or opcionMotocicletas>6:
-                    print("ERROR. OPCION FUERA DE RANGO.")
+                    print("Volviendo al menu Consesinaria")
+                if 0<opcionMotocicletas>6:
+                    print("OPCION FUERA DE RANGO.")
                     break
             if nro==0:
                 break
-            if nro <0 or nro >2:
-                print("ERROR. OPCION FUERA DE RANGO")
+            if 0>nro>2:
+                print("OPCION FUERA DE RANGO")
                 break
     
     def crearTablas(self):
@@ -162,7 +180,7 @@ class ProgramaPrincipal:
         conexion = Conexiones()
         conexion.abrirConexion()
         conexion.miCursor.execute("DROP TABLE IF EXISTS MOTOCICLETAS")
-        conexion.miCursor.execute("CREATE TABLE MOTOCICLETAS (id_moto INTEGER PRIMARY KEY , modelo  VARCHAR(30), marca  VARCHAR(30), cilindrada  VARCHAR(30), precio INTEGER NOT NULL, color  VARCHAR(30), cantidadDisponibles INTEGER NOT NULL, fechaUltimoPrecio DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP)")   
+        conexion.miCursor.execute("CREATE TABLE MOTOCICLETAS (id_moto INTEGER PRIMARY KEY , marca VARCHAR(30), modelo VARCHAR(30), cilindrada  VARCHAR(30), precio INTEGER NOT NULL, color  VARCHAR(30), cantidadDisponibles INTEGER NOT NULL, fechaUltimoPrecio DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP)")   
         conexion.miConexion.commit()       
         conexion.cerrarConexion()
 
@@ -170,7 +188,7 @@ class ProgramaPrincipal:
         conexion = Conexiones()
         conexion.abrirConexion()
         conexion.miCursor.execute("DROP TABLE IF EXISTS MOTOCICLETAS_HISTORICO")
-        conexion.miCursor.execute("CREATE TABLE MOTOCICLETAS_HISTORICO (id_moto INTEGER , modelo  VARCHAR(30), marca  VARCHAR(30), cilindrada  VARCHAR(30), precio INTEGER, color  VARCHAR(30), cantidadDisponibles INTEGER, fechaUltimoPrecio DATETIME)")
+        conexion.miCursor.execute("CREATE TABLE MOTOCICLETAS_HISTORICO (id_moto INTEGER , marca  VARCHAR(30), modelo  VARCHAR(30), cilindrada  VARCHAR(30), precio INTEGER, color  VARCHAR(30), cantidadDisponibles INTEGER, fechaUltimoPrecio DATETIME)")
         conexion.miConexion.commit()     
         conexion.cerrarConexion()
 
@@ -179,15 +197,21 @@ class ProgramaPrincipal:
             print("Error. Intente nuevamente")
             return False
         return True
+
     def validarNumero(self,validar):
-        if(validar.isalpha()==True):
+        if(validar.isnumeric()==False or int(validar)<=0):
             print("Error. ingrese nuevamente")
             return False
         return True
-   ## def validarPrecio(self,precio):
-     #  if(precio <= 0): NO SE COMO AGREGAR QUE EL PRECIO SEA FLOAT ADEMAS DE MAYOR A 0(lo msimo con cantidadidsp)
-       #   return False
-        #return True
+        #si se combina letras y numeros no funciona
+   
+    def validarPrecio(self,precio):
+        if  precio.isnumeric()==False or float(precio)<=0 : 
+            print("Error. ingrese nuevamente")
+            return False
+        return True
+    
+
     #def validarCantidad(self,cantidadDisponibles):
      #   if(cantidadDisponibles <= 0):
       #      print("CANTIDAD ERRONEA")
@@ -195,7 +219,6 @@ class ProgramaPrincipal:
         #return True
        
    
-
 class Automovil:
     def __init__(self, marca, modelo,precio=None,cantidadDisponibles=None):
         self.marca = marca
@@ -219,10 +242,20 @@ class Automovil:
     def modificar_automoviles(self):
         conexion = Conexiones()
         conexion.abrirConexion()
+
         try:
-            conexion.miCursor.execute("UPDATE AUTOMOVILES SET precio='{}' where marca='{}' and modelo='{}' ".format(self.precio,self.marca,self.modelo))
-            conexion.miConexion.commit()
-            print("Automovil modificado correctamente")
+            conexion.miCursor.execute("SELECT marca, modelo FROM AUTOMOVILES")
+            marca_modelo= conexion.miCursor.fetchall()
+            if marca_modelo==[]:
+                print("Tabla vacia")
+            else:
+                for marca_modelo in marca_modelo:
+                    if marca_modelo[0] ==self.marca and marca_modelo[1]==self.modelo:
+                        conexion.miCursor.execute("UPDATE AUTOMOVILES SET precio='{}' where marca='{}' and modelo='{}' ".format(self.precio,self.marca,self.modelo))
+                        conexion.miConexion.commit()
+                        print("Automovil eliminado correctamente")
+                    else:
+                        print("El automovil ingresado no existe")
         except:
             print('Error al actualizar un automovil')
         finally:
@@ -233,13 +266,16 @@ class Automovil:
         try:
             conexion.miCursor.execute("SELECT marca, modelo FROM AUTOMOVILES")
             marca_modelo= conexion.miCursor.fetchall()
-            for marca_modelo in marca_modelo:
-                if marca_modelo[0] ==self.marca and marca_modelo[1]==self.modelo:
-                    conexion.miCursor.execute("DELETE FROM AUTOMOVILES where marca='{}'and modelo='{}'" .format(self.marca,self.modelo))
-                    conexion.miConexion.commit()
-                    print("Automovil eliminado correctamente")
-                else:
-                    print("El automovil ingresado no existe")
+            if marca_modelo==[]:
+                print("Tabla vacia")
+            else:
+                for marca_modelo in marca_modelo:
+                    if marca_modelo[0] ==self.marca and marca_modelo[1]==self.modelo:
+                        conexion.miCursor.execute("DELETE FROM AUTOMOVILES where marca='{}'and modelo='{}'" .format(self.marca,self.modelo))
+                        conexion.miConexion.commit()
+                        print("Automovil eliminado correctamente")
+                    else:
+                        print("El automovil ingresado no existe")
         except:
             print("ERROR. No se ha podido eliminar el automovil")
         finally:
@@ -248,10 +284,20 @@ class Automovil:
     def cargar_disponibilidad(self):
         conexion = Conexiones()
         conexion.abrirConexion()
+        
         try:
-            conexion.miCursor.execute("UPDATE AUTOMOVILES SET cantidadDisponibles=cantidadDisponibles + 1 where marca='{}' and modelo='{}'".format(self.marca, self.modelo))
-            conexion.miConexion.commit()
-            print("Cantidad disponible modificada correctamente")
+            conexion.miCursor.execute("SELECT marca, modelo FROM AUTOMOVILES")
+            marca_modelo= conexion.miCursor.fetchall()
+            if marca_modelo==[]:
+                print("Tabla vacia")
+            else:
+                for marca_modelo in marca_modelo:
+                    if marca_modelo[0]==self.marca and marca_modelo[1]==self.modelo:
+                        conexion.miCursor.execute("UPDATE AUTOMOVILES SET cantidadDisponibles=cantidadDisponibles + 1 where marca='{}' and modelo='{}'".format(self.marca, self.modelo))
+                        conexion.miConexion.commit()
+                        print("Cantidad disponible modificada correctamente")
+                    else:
+                        print("El automovil ingresado no existe")
         except:
             print("ERROR. No se ha podido actualizar la cantidad disponible")
         finally:
@@ -262,7 +308,11 @@ class Automovil:
         try:
             conexion.miCursor.execute("SELECT * FROM AUTOMOVILES")
             autos = conexion.miCursor.fetchall()
-            print(autos)
+            if autos==[]:
+                print("Tabla vacia")
+            else:
+                for autos in autos:
+                 print(f'ID: {autos[0]}\nMarca: {autos[1]}\nModelo: {autos[2]}\nPrecio: {autos[3]}\nCantidad disponible: {autos[4]}')   
         except:
             print("ERROR. No se han podido listar los automoviles")
         finally:
@@ -272,7 +322,7 @@ class Automovil:
 
 
 class Motocicleta:
-    def __init__(self,marca,modelo,cilindrada=None,precio=None,color=None,cantidadDisponibles=None):
+    def __init__(self,marca,modelo,cilindrada,precio,color,cantidadDisponibles):
         self.marca = marca
         self.modelo = modelo
         self.cilindrada = cilindrada
@@ -285,7 +335,7 @@ class Motocicleta:
         conexion = Conexiones()
         conexion.abrirConexion()
         try:
-            conexion.miCursor.execute("INSERT INTO MOTOCICLETAS(modelo,marca,cilindrada,precio,color,cantidadDisponibles) VALUES('{}', '{}', '{}', '{}', '{}', '{}')".format(self.modelo,self.marca,self.cilindrada,self.precio,self.color,self.cantidadDisponibles))
+            conexion.miCursor.execute("INSERT INTO MOTOCICLETAS(marca,modelo,cilindrada,precio,color,cantidadDisponibles) VALUES('{}', '{}', '{}', '{}', '{}', '{}')".format(self.marca,self.modelo,self.cilindrada,self.precio,self.color,self.cantidadDisponibles))
             conexion.miConexion.commit()
             print("Motocicleta cargada exitosamente")
         except:
@@ -300,12 +350,12 @@ class Motocicleta:
         try:
             conexion.miCursor.execute("SELECT * FROM MOTOCICLETAS") 
             motocicletas = conexion.miCursor.fetchall() 
-            for moto in motocicletas:   
+            for moto in motocicletas:
                 id, modelo, marca, cilindrada, precio, color, cantidadDisponibles, fecha = moto 
                 conexion.miCursor.execute("INSERT INTO MOTOCICLETAS_HISTORICO(id_moto,modelo,marca,cilindrada,precio,color,cantidadDisponibles,fechaUltimoPrecio) VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(id,modelo,marca,cilindrada,precio,color,cantidadDisponibles,fecha))
-            conexion.miConexion.commit()
-            conexion.miCursor.execute("UPDATE MOTOCICLETAS SET precio= precio*1.1, fechaUltimoPrecio=CURRENT_TIMESTAMP")
-            conexion.miConexion.commit()
+                conexion.miConexion.commit()
+                conexion.miCursor.execute("UPDATE MOTOCICLETAS SET precio= precio*1.1, fechaUltimoPrecio=CURRENT_TIMESTAMP")
+                conexion.miConexion.commit()
             print("Motocicletas actualizadas correctamente")
         except:
             print("Error al actualizar precios")
@@ -316,6 +366,7 @@ class Motocicleta:
         conexion.abrirConexion()
         try:
             id=input("Ingrese el ID de la motocicleta a eliminar: ")
+
             conexion.miCursor.execute("DELETE FROM MOTOCICLETAS where id_moto='{}'".format(id))
             conexion.miConexion.commit()
             print("Motocicleta eliminada exitosamente")
@@ -341,14 +392,16 @@ class Motocicleta:
         conexion = Conexiones()
         conexion.abrirConexion()
         try:
-            conexion.miCursor.execute("SELECT * FROM MOTOCICLETAS")
-            motocicletas = conexion.miCursor.fetchall()
-            fecha = input("ingrese una fecha formato AAAA/MM/DD: ")
-            print("-------------LISTADO POR FECHA------------------")     
-            for moto in motocicletas:
-                print(f'ID: {moto[0]}\nMarca: {moto[1]}\nModelo: {moto[2]}\nCilindrada: {moto[3]}\nPrecio: {moto[4]}\nColor: {moto[5]}\nCantidad Disponible: {moto[6]}\nFecha Ultimo Precio: {moto[7]}')
-                if moto[7] == fecha:
-                    break     
+            anio= input("ingrese año buscar AAAA \n") 
+            mes=input("ingrese mes buscar  MM:\n")        
+            dia= input("ingrese dia buscar DD: \n")                     
+            fecha= str(anio)+"-"+str(mes)+"-"+str(dia)+" 23:59"            
+            print("fecha seleccionada :"+ fecha +"\n" )             
+            conexion.miCursor.execute("SELECT * FROM MOTOCICLETAS_HISTORICO where fechaUltimoPrecio <= '{}'".format(fecha))             
+            motocicletas_historico = conexion.miCursor.fetchall()     
+            for i in range(len(motocicletas_historico)): 
+                moto=motocicletas_historico[i] 
+                print(f'ID: {moto[0]}\nMarca: {moto[1]}\nModelo: {moto[2]}\nCilindrada: {moto[3]}\nPrecio: {moto[4]}\nColor: {moto[5]}\nCantidad Disponible: {moto[6]}\nFecha Ultimo Precio: {moto[7]}')                              
         except:
             print("ERROR. No se ha podido mostrar el listado")
         finally:
@@ -374,12 +427,11 @@ class Motocicleta:
         try:
             conexion.miCursor.execute("SELECT * FROM MOTOCICLETAS")
             motocicletas = conexion.miCursor.fetchall()
-            marca = input("ingrese marca a buscar: ")
-            modelo=input("ingrese modelo a buscar: ")
-            print("-------------LISTADO POR MARCA Y MODELO------------------")     
+            marca= input("ingrese marca a buscar: ")
+            modelo=input("ingrese modelo: ")
+            print("-------------LISTADO POR MARCA Y MODELO-----------------")     
             for moto in motocicletas:
-                if moto[1] == marca:
-                    if moto[2]==modelo:
+                if moto[1] == marca and moto[2]==modelo:
                         print(f'ID: {moto[0]}\nMarca: {moto[1]}\nModelo: {moto[2]}\nCilindrada: {moto[3]}\nPrecio: {moto[4]}\nColor: {moto[5]}\nCantidad Disponible: {moto[6]}\nFecha Ultimo Precio: {moto[7]}')
                         break  
                 else:
@@ -387,7 +439,7 @@ class Motocicleta:
         except:
             print("ERROR. No se ha podido mostrar el listado")
         finally:
-            conexion.cerrarConexion() 
+            conexion.cerrarConexion()
     def listar_motocicleta_color(self):
         conexion=Conexiones()
         conexion.abrirConexion()
@@ -412,7 +464,7 @@ class Motocicleta:
         try:
             id=input("Ingresa el ID de la motocicleta a modificar: ")
             precio=input("Ingresa el nuevo precio: ")
-            conexion.miCursor.execute("UPDATE MOTOCICLETAS SET precio where id_moto= '{}' " .format(self.precio,id))
+            conexion.miCursor.execute("UPDATE MOTOCICLETAS SET precio='{}' where id_moto= '{}' " .format(precio,id))
             conexion.miConexion.commit()
             print("Motocicleta modificada correctamente")
         except:
@@ -420,7 +472,6 @@ class Motocicleta:
         finally:
             conexion.cerrarConexion()
     
-
 
 class Conexiones:
     
